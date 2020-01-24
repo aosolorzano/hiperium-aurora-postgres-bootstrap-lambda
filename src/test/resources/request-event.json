@@ -1,0 +1,81 @@
+{
+    "path": "/getCitySector",
+    "headers": {
+        "User-Agent": "curl/7.54.0",
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-For": "181.199.51.70",
+        "Host": "dedf5mqma5.execute-api.us-east-1.amazonaws.com",
+        "X-Forwarded-Port": "443",
+        "X-Amzn-Trace-Id": "Root=1-5d981687-59c482f031c7b2ad7f783e75",
+        "accept": "*/*"
+    },
+    "pathParameters": null,
+    "isBase64Encoded": false,
+    "multiValueQueryStringParameters": {
+        "cityId": [
+            "2CB56B3C7F9D41E8E4E2E79708D7D915FE35465A469D6A9528A343C3694D190A"
+        ]
+    },
+    "multiValueHeaders": {
+        "User-Agent": [
+            "curl/7.54.0"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ],
+        "X-Forwarded-For": [
+            "181.199.51.70"
+        ],
+        "Host": [
+            "dedf5mqma5.execute-api.us-east-1.amazonaws.com"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5d981687-59c482f031c7b2ad7f783e75"
+        ],
+        "accept": [
+            "*/*"
+        ]
+    },
+    "requestContext": {
+        "resourceId": "9brkvb",
+        "resourcePath": "/getCitySector",
+        "httpMethod": "GET",
+        "extendedRequestId": "BEh1QE0JIAMFzQQ=",
+        "requestTime": "05/Oct/2019:04:05:27 +0000",
+        "path": "/dev/getCitySector",
+        "accountId": "266902741410",
+        "protocol": "HTTP/1.1",
+        "stage": "dev",
+        "domainPrefix": "dedf5mqma5",
+        "requestTimeEpoch": 1570248327938,
+        "requestId": "df5b81bb-d4ef-4a8b-b14f-a7616dcd30ad",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "181.199.51.70",
+            "principalOrgId": null,
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "curl/7.54.0",
+            "user": null
+        },
+        "domainName": "dedf5mqma5.execute-api.us-east-1.amazonaws.com",
+        "apiId": "dedf5mqma5"
+    },
+    "resource": "/getCitySector",
+    "httpMethod": "GET",
+    "queryStringParameters": {
+        "cityId": "2CB56B3C7F9D41E8E4E2E79708D7D915FE35465A469D6A9528A343C3694D190A"
+    },
+    "stageVariables": {
+        "iamEc2Instance": "100.26.220.123"
+    },
+    "body": null
+}

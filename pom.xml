@@ -1,0 +1,184 @@
+<!--DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER. Product: <description>Hiperium 
+	Project for Smart Homes</description> Created: 13-Ago-2015 - 00:00:00 The 
+	contents of this file are copyrighted by Hiperium Corp. and it is protected 
+	by the license: "GPL V3." You can find a copy of this license at: http://www.hiperium.com/hiperium/licence.html 
+	Copyright 2015. All rights reserved. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.hiperium</groupId>
+	<artifactId>hiperium-aurora-postgres-bootstrap-lambda</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Load Data to Aurora Postgres</name>
+	<description>Execute SQL script into Aurora Postgres after its creation.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3</name>
+			<distribution>repo</distribution>
+			<url>http://www.gnu.org/copyleft/gpl.html</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Hiperium Corporation</name>
+		<url>http://www.hiperium.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>asolorzano</id>
+			<name>Andres Solorzano</name>
+			<email>andres.solorzano@hiperium.com</email>
+			<organization>Hiperium Corporation</organization>
+			<roles>
+				<role>Hiperium Project Lead Architect</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>hiperium-s3-releases-repo</id>
+			<name>AWS S3 Release Repository</name>
+			<url>s3://maven-repository.hiperium.cloud/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>hiperium-s3-snapshots-repo</id>
+			<name>AWS S3 Snapshot Repository</name>
+			<url>s3://maven-repository.hiperium.cloud/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>hiperium-s3-releases-repo</id>
+			<name>AWS S3 Releases Repository</name>
+			<url>s3://maven-repository.hiperium.cloud/releases</url>
+		</repository>
+		<repository>
+			<id>hiperium-s3-snapshots-repo</id>
+			<name>AWS S3 Snapshots Repository</name>
+			<url>s3://maven-repository.hiperium.cloud/snapshots</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-java-sdk-bom</artifactId>
+				<version>1.11.712</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- AWS Modules -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-lambda</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-secretsmanager</artifactId>
+		</dependency>
+		<!-- JSON API -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
+		</dependency>
+		<!-- JAVA PERSISTENCE API (HIBERNATE IMPLEMENTATION) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.4.6.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.10.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- PostgreSQL API -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.8</version>
+		</dependency>
+		<!-- LOG4J2 API -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-log4j2</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<!-- JUNIT API -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.kuali.maven.wagons</groupId>
+				<artifactId>maven-s3-wagon</artifactId>
+				<version>1.2.1</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer">
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.edwgiz</groupId>
+						<artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
+						<version>2.8.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>
